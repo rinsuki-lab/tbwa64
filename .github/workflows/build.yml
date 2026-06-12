@@ -46,7 +46,7 @@ jobs:
     - name: Install Wine
       run: cd wine && sudo --preserve-env=PATH make install -j$(nproc)
     - name: Build FEX-emu (Arm64EC)
-      run:
+      run: |
         cd fex-emu
         mkdir build-arm64ec
         cd build-arm64ec
@@ -54,7 +54,7 @@ jobs:
         ninja
         sudo ninja install
     - name: Build FEX-emu (WoW64 x86)
-      run:
+      run: |
         cd fex-emu
         mkdir build-wow64
         cd build-wow64
@@ -62,7 +62,7 @@ jobs:
         ninja
         sudo ninja install
     - name: Archive everything
-      run:
+      run: |
         cd /opt/wine-arm64ec
         tar czf $GITHUB_WORKSPACE/wine-arm64ec.tar.gz .
     - uses: actions/upload-artifact@v7
