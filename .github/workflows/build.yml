@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
     - name: Install Build Dependencies
-      run: sudo apt-get install -y \
-        libx11-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libpulse-dev libxext-dev libvulkan-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libx11-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libpulse-dev libxext-dev libvulkan-dev
     - name: Download llvm-mingw toolchain
       run: |
         set -xe
