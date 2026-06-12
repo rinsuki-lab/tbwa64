@@ -1,0 +1,31 @@
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    steps:
+    - name: Download llvm-mingw toolchain
+      run: |
+        set -xe
+        wget https://github.com/mstorsjo/llvm-mingw/releases/download/20260602/llvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz
+        echo "e71b61c968f65f94ed3878ca22ab663d7854d91c053c1b8a824ac2f1c9a18503\tllvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz" | sha256sum --check
+        mkdir /opt/llvm-mingw
+        pushd /opt/llvm-mingw
+        tar xvf $GITHUB_WORKSPACE/llvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz
+        echo "/opt/llvm-mingw/bin" >> $GITHUB_PATH
+    - name: Download Wine Code
+      uses: actions/checkout@v6
+      with:
+        repository: wine-mirror/wine
+        ref: 2cac6ccf33c0807f374dc96f5a20e35a2da86157 # https://gitlab.winehq.org/wine/wine/-/tags/wine-11.10
+        path: wine
+    - name: Configure Wine
+      run: |
+        cd wine
+        ./configure --enable-archs=arm64ec,aarch64,i386 --prefix=/opt/wine-arm64ec --with-mingw=clang --disable-tests
+    - name: Build Wine
+      run: cd wine && make -j$(nproc)
+    - name: Install Wine
+      run: sudo --preserve-env=PATH make install -j$(nproc)
