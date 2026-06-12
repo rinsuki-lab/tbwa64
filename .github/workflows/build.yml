@@ -20,9 +20,10 @@ jobs:
         set -xe
         wget https://github.com/mstorsjo/llvm-mingw/releases/download/20260602/llvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz
         echo -e "e71b61c968f65f94ed3878ca22ab663d7854d91c053c1b8a824ac2f1c9a18503\tllvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz" | sha256sum --check
+        tar xvf llvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz
         mkdir /opt/llvm-mingw
-        pushd /opt/llvm-mingw
-        tar xvf $GITHUB_WORKSPACE/llvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64.tar.xz
+        mv llvm-mingw-20260602-ucrt-ubuntu-22.04-aarch64/* /opt/llvm-mingw/
+        ls /opt/llvm-mingw/bin
         echo "/opt/llvm-mingw/bin" >> $GITHUB_PATH
     - name: Download Wine Code
       uses: actions/checkout@v6
