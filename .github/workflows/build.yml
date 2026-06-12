@@ -37,6 +37,7 @@ jobs:
         repository: FEX-emu/FEX
         ref: a04b0241c2fe3911729842205cd8643981108aad # https://github.com/FEX-Emu/FEX/releases/tag/FEX-2605
         path: fex-emu
+        submodules: true
     - name: Configure Wine
       run: |
         cd wine
